@@ -16,6 +16,19 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      for-windows:
+        type: boolean
+        description: export for windows
+      for-linux:
+        type: boolean
+        description: export for linux
+      for-web:
+        type: boolean
+        description: export for web
+      for-mac:
+        type: boolean
+        description: export for mac
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -34,6 +47,7 @@ jobs:
       - name: Windows Build
         run: godot -v --export "Windows Desktop" ./build/windows/$EXPORT_NAME.exe
       - name: Upload Artifact
+        if: github.event.inputs.for-windows == 'true' # Don't upload artifact when they are not needed.
         uses: actions/upload-artifact@v1
         with:
           name: windows
@@ -54,6 +68,7 @@ jobs:
       - name: Linux Build
         run: godot -v --export "Linux/X11" ./build/linux/$EXPORT_NAME.x86_64
       - name: Upload Artifact
+        if: github.event.inputs.for-linux == 'true' # Don't upload artifact when they are not needed.
         uses: actions/upload-artifact@v1
         with:
           name: linux
@@ -74,6 +89,7 @@ jobs:
       - name: Web Build
         run: godot -v --export "HTML5" ./build/web/index.html
       - name: Upload Artifact
+        if: github.event.inputs.for-web == 'true' # Don't upload artifact when they are not needed.
         uses: actions/upload-artifact@v1
         with:
           name: web
@@ -94,6 +110,7 @@ jobs:
       - name: Mac Build
         run: godot -v --export "Mac OSX" ./build/mac/$EXPORT_NAME.zip
       - name: Upload Artifact
+        if: github.event.inputs.for-mac == 'true' # Don't upload artifact when they are not needed.
         uses: actions/upload-artifact@v1
         with:
           name: mac

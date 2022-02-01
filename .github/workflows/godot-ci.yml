@@ -1,0 +1,100 @@
+# This is a basic workflow to help you get started with Actions
+
+name: godot-ci
+
+env:
+  GODOT_VERSION: 3.4.2
+  EXPORT_NAME: Space-Invaders
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  export-windows:
+    name: Windows Export
+    runs-on: ubuntu-latest
+    container:
+      image: docker://barichello/godot-ci:mono-3.4.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        run: |
+          mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/
+          mv /root/.local/share/godot/templates ~/.local/share/godot/templates
+      - name: Windows Build
+        run: godot -v --export "Windows Desktop" ./build/windows/$EXPORT_NAME.exe
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: windows
+          path: ./build/windows/
+
+  export-linux:
+    name: Linux Export
+    runs-on: ubuntu-latest
+    container:
+      image: docker://barichello/godot-ci:mono-3.4.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        run: |
+          mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/
+          mv /root/.local/share/godot/templates ~/.local/share/godot/templates
+      - name: Linux Build
+        run: godot -v --export "Linux/X11" ./build/linux/$EXPORT_NAME.x86_64
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: linux
+          path: ./build/linux/
+
+  export-web:
+    name: Web Export
+    runs-on: ubuntu-latest
+    container:
+      image: docker://barichello/godot-ci:mono-3.4.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        run: |
+          mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/
+          mv /root/.local/share/godot/templates ~/.local/share/godot/templates
+      - name: Web Build
+        run: godot -v --export "HTML5" ./build/web/index.html
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: web
+          path: ./build/web/
+
+  export-mac:
+    name: Mac Export
+    runs-on: ubuntu-latest
+    container:
+      image: docker://barichello/godot-ci:mono-3.4.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup
+        run: |
+          mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/
+          mv /root/.local/share/godot/templates ~/.local/share/godot/templates
+      - name: Mac Build
+        run: godot -v --export "Mac OSX" ./build/mac/$EXPORT_NAME.zip
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: mac
+          path: ./build/mac/

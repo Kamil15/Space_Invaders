@@ -36,7 +36,6 @@ public class Player : KinematicBody2D {
 		var playerLaser = ResourceLoader.Load<PackedScene>("res://scenes/Laser.tscn")
 			.Instance<Laser>();
 		
-		//playerLaser.IsFriendly = false;
 		playerLaser._velocity = new Vector2(0f, -200f);
 		playerLaser.GlobalPosition = GlobalPosition + new Vector2(0f, -36f);
 		playerLaser.CollisionMask |= Enemy.DefaultCollisionLayer;

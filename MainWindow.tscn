@@ -90,4 +90,4 @@ position = Vector2( 50, -50 )
 collision_mask = 255
 
 [node name="EnemyGrid" parent="." instance=ExtResource( 5 )]
-position = Vector2( 200, 50 )
+position = Vector2( 25, 20 )

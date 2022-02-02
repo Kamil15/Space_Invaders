@@ -8,15 +8,23 @@ public class Enemy : KinematicBody2D {
 
 	// Called when the node enters the scene tree for the first time.
 	public static readonly uint DefaultCollisionLayer = 4;
-	public override void _Ready() {
+	private Timer shotTimer;
 
+	public override void _Ready() {
+		shotTimer = GetNode<Timer>("./ShotTimer");
+		shotTimer.Start(GetNextTime());
 	}
 
-	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-	//  public override void _Process(float delta)
-	//  {
-	//      
-	//  }
+	public override void _Process(float delta) {
+		if (shotTimer.TimeLeft == 0) {
+			shotTimer.Start(GetNextTime());
+			ShotLaser();
+		}
+	}
+
+	float GetNextTime() {
+		return (GD.Randi() % 50) * 0.5f;
+	}
 
 	public void GetHit() {
 		this.QueueFree();
@@ -30,10 +38,9 @@ public class Enemy : KinematicBody2D {
 		var playerLaser = ResourceLoader.Load<PackedScene>("res://scenes/Laser.tscn")
 			.Instance<Laser>();
 		
-		//playerLaser.IsFriendly = false;
 		playerLaser._velocity = new Vector2(0f, 200f);
 		playerLaser.GlobalPosition = GlobalPosition + new Vector2(0f, -36f);
 		playerLaser.CollisionMask |= Player.DefaultCollisionLayer;
-		GetParent().AddChild(playerLaser);
+		GetTree().Root.AddChild(playerLaser);
 	}
 }

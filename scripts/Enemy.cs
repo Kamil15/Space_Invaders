@@ -23,14 +23,15 @@ public class Enemy : KinematicBody2D {
 	}
 
 	float GetNextTime() {
-		return (GD.Randi() % 50) * 0.5f;
+		return (GD.Randi() % 25) * 0.5f;
 	}
 
 	public void GetHit() {
+		GetParent().GetParent<EnemyGrid>().OneDown(this);
 		this.QueueFree();
 	}
 	public override void _InputEvent(Godot.Object viewport, InputEvent @event, int shapeIdx) {
-		GD.Print("Oya?");
+		
 	}
 
 	
@@ -41,6 +42,6 @@ public class Enemy : KinematicBody2D {
 		playerLaser._velocity = new Vector2(0f, 200f);
 		playerLaser.GlobalPosition = GlobalPosition + new Vector2(0f, -36f);
 		playerLaser.CollisionMask |= Player.DefaultCollisionLayer;
-		GetTree().Root.AddChild(playerLaser);
+		GetParent().GetParent().GetParent().AddChild(playerLaser);
 	}
 }

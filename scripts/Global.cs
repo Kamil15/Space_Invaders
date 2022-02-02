@@ -3,6 +3,8 @@ using System;
 
 public class Global : Node2D {
 
+    public uint Score { get; set; } = 0;
+
     public override void _Ready() {
         base._Ready();
 
@@ -10,6 +12,10 @@ public class Global : Node2D {
 
 
     public void GameOver() {
-        GD.Print("Oya? Oya? Oya?");
+        GetTree().ChangeScene("res://scenes/EndGame.tscn");
+    }
+
+    public void RestartState() {
+        Score = 0;
     }
 }

@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://texture/hud/arrow-button.svg" type="Texture" id=1]
+
+[node name="MobileControls" type="CanvasLayer"]
+
+[node name="Left" type="TouchScreenButton" parent="."]
+position = Vector2( 167, 550 )
+rotation = 3.14159
+scale = Vector2( 0.2, 0.2 )
+normal = ExtResource( 1 )
+action = "ui_left"
+
+[node name="Right" type="TouchScreenButton" parent="."]
+position = Vector2( 207, 410 )
+scale = Vector2( 0.2, 0.2 )
+normal = ExtResource( 1 )
+action = "ui_right"
+
+[node name="Attac" type="TouchScreenButton" parent="."]
+position = Vector2( 839, 550 )
+rotation = -1.5708
+scale = Vector2( 0.2, 0.2 )
+normal = ExtResource( 1 )
+action = "ui_select"
